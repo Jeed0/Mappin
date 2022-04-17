@@ -1,10 +1,14 @@
 
+import * as React from 'react';
+import "./app.css";
+import { useEffect, useState } from 'react';
 import Map, {Marker, Popup} from 'react-map-gl';
+
+
 import 'mapbox-gl/dist/mapbox-gl.css';
 import token from './token';
 import {Room, Star} from '@material-ui/icons';
-import "./app.css";
-import { useEffect, useState } from 'react';
+
 import axios from "axios";
 import {format} from "timeago.js";
 
@@ -12,7 +16,15 @@ import {format} from "timeago.js";
 
 function App() {
 
+const currentUser = "jj";
+
 const [pins, setPins] = useState([]);
+
+const [currentPlaceId, setCurrentPlaceId] = useState(null);
+
+const handleMarkerClick = (id) => {
+  setCurrentPlaceId(id);
+};
 
 useEffect(() => {
   const getPins = async () => {
@@ -26,9 +38,12 @@ useEffect(() => {
   getPins();
 }, []);
 
+
+
   return (
     <>
     <Map 
+     
       initialViewState={{
         //coordonnées GPS MADININA
         longitude: -61.024174,
@@ -36,7 +51,7 @@ useEffect(() => {
         zoom: 10
       }}
       
-      style={{width: 800, height: 800}}
+      style={{width: "50vw", height: "100vh"}}
       mapStyle="mapbox://styles/mapbox/streets-v9"
       mapboxAccessToken= {token}
     >
@@ -44,27 +59,35 @@ useEffect(() => {
     {pins.map((p) => (
       <>
      <Marker 
+    
       //longitude={-61.05113}
       //latitude={14.55041}
       longitude={p.long}
       latitude={p.lat}
       offsetLeft={-20}
       offsetTop={-10}  
+
      >
      <Room 
-      color="secondary" 
-      fontSize="large" 
+      style={{
+                  fontSize: "zoom*50",
+                  color: p.username === currentUser ? "tomato " : "blue",
+                  cursor: "pointer",
+                }} 
+      onClick={()=>handleMarkerClick(p._id)}
      />
     </Marker>
+    {p._id === currentPlaceId && (
    
     <Popup
-      className='popup'
-      longitude={p.long}
-      latitude={p.lat}
-      closeButton={true}
-      closeOnClick={false}
-      //onClose={() => setCurrentPlaceId(null)}
-      anchor="left"
+      key={p._id}
+                latitude={p.lat}
+                longitude={p.long}
+                closeButton={true}
+                closeOnClick={false}
+                anchor="left"
+                //onClose = {() => setCurrentPlaceId(null)}
+                
     >
       <div className="card">
       <label>Lieu :</label>
@@ -83,10 +106,12 @@ useEffect(() => {
       <span className="username">Crée par <b>{p.username}</b></span>
       <span className="date"> {format(p.createdAt)} </span>
       </div>
-    </Popup> </>
-    ))} 
-  </Map>;
-    </>
+    </Popup>  )
+    } </>
+   
+    )  )} 
+  </Map></>
+
   );
 }
 
