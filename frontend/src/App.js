@@ -4,10 +4,27 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import token from './token';
 import {Room, Star} from '@material-ui/icons';
 import "./app.css";
+import { useEffect, useState } from 'react';
+import axios from "axios";
 
 
 
 function App() {
+
+const [pins, setPins] = useState([]);
+
+useEffect(() => {
+  const getPins = async () => {
+    try {
+      const allPins = await axios.get("/pins");
+      setPins(allPins.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  getPins();
+}, []);
+
   return (
     <>
     <Map 
@@ -22,29 +39,37 @@ function App() {
       mapStyle="mapbox://styles/mapbox/streets-v9"
       mapboxAccessToken= {token}
     >
+    
+    {pins.map((p) => (
+      <>
      <Marker 
-      longitude={-61.05113}
-      latitude={14.55041}  
+      //longitude={-61.05113}
+      //latitude={14.55041}
+      longitude={p.long}
+      latitude={p.lat}
+      offsetLeft={-20}
+      offsetTop={-10}  
      >
      <Room 
       color="secondary" 
       fontSize="large" 
      />
     </Marker>
+   
     <Popup
       className='popup'
-      longitude={-61.05113}
-      latitude={14.55041}
+      longitude={p.long}
+      latitude={p.lat}
       closeButton={true}
       closeOnClick={false}
-      //onClose{() => togglePopup(false)}
-      anchor="top"
+      //onClose={() => setCurrentPlaceId(null)}
+      anchor="left"
     >
       <div className="card">
       <label>Lieu :</label>
-      <h4 className="place">Ti kay Dous</h4>
+      <h4 className="place">{p.title}</h4>
       <label >Résumé :</label>
-      <p className="description">Notre appartement en location</p>
+      <p className="description">{p.desc}</p>
       <label>Note :</label>
       <div className="stars">
         <Star className="star" />
@@ -54,10 +79,11 @@ function App() {
         <Star className="star" />   
       </div>
       <label>informations :</label>
-      <span className="username">Crée par <b>JeeDo</b></span>
+      <span className="username">Crée par <b>{p.username}</b></span>
       <span className="date"> 1 hour ago</span>
       </div>
-    </Popup>
+    </Popup> </>
+    ))} 
   </Map>;
     </>
   );

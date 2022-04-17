@@ -26,7 +26,7 @@ router.post("/register", async(req,res)=> {
 
 //login
 
-router.post("/login", async(req,res)=> {  
+router.post("/login", async(req, res)=> {  
     try{
         // trouver l'utilisateur
         const user = await User.findOne({username: req.body.username });
@@ -40,7 +40,7 @@ router.post("/login", async(req,res)=> {
         !validPassword && res.status(400).json("Votre identifiant oou MDP n existent pas!");
 
         //sauver et envoyer la reponse
-        res.status(200).json({ _id: user._id, username: username });
+        res.status(200).json({ _id: user._id, username: user.username });
     }
     catch(err){
         res.status(500).json(err);
