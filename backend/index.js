@@ -2,7 +2,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const app = express();
-const pinRoute = require("./routes/pins")
+
+const userRoute = require("./routes/users");
+const pinRoute = require("./routes/pins");
 
 dotenv.config();
 
@@ -15,6 +17,7 @@ mongoose.connect(process.env.MONGO_URL, {
     console.log("MongoDB Connecté!")
 }).catch(err=> console.log(err));
 
+app.listen("/api/users",userRoute);
 app.listen("/api/pins", pinRoute);
 
 app.listen(8800,()=>{
