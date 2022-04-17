@@ -6,6 +6,7 @@ import {Room, Star} from '@material-ui/icons';
 import "./app.css";
 import { useEffect, useState } from 'react';
 import axios from "axios";
+import {format} from "timeago.js";
 
 
 
@@ -80,7 +81,7 @@ useEffect(() => {
       </div>
       <label>informations :</label>
       <span className="username">Crée par <b>{p.username}</b></span>
-      <span className="date"> 1 hour ago</span>
+      <span className="date"> {format(p.createdAt)} </span>
       </div>
     </Popup> </>
     ))} 
