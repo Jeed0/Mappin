@@ -1,6 +1,6 @@
-const router = require("express").Router();
 const User = require("../models/User");
-const bcrypt = require('bcrypt');
+const router = require("express").Router();
+const bcrypt = require("bcrypt");
 
 //Register
 
@@ -8,7 +8,7 @@ router.post("/register", async(req,res)=> {
     try{
         // générer le mot de passe -> yarn add bcrypt
         const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(req.body.password);
+        const hashedPassword = await bcrypt.hash(req.body.password, salt);
         // creer le nouvel utilisateur
         const newUser = new User({
             username: req.body.username,
@@ -22,14 +22,14 @@ router.post("/register", async(req,res)=> {
     catch(err){
         res.status(500).json(err);
     }
-})
+});
 
 //login
 
 router.post("/login", async(req,res)=> {  
     try{
         // trouver l'utilisateur
-        const user = await User.findOne({username:req.body.username});
+        const user = await User.findOne({username: req.body.username });
         !user && res.status(400).json("Votre identifiant oou MDP n existent pas!");
 
         // valider le MDP
@@ -45,6 +45,6 @@ router.post("/login", async(req,res)=> {
     catch(err){
         res.status(500).json(err);
     }
-})
+});
 
-module.exports = router
+module.exports = router;
