@@ -3,6 +3,7 @@ import Map, {Marker, Popup} from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import token from './token';
 import {Room, Star} from '@material-ui/icons';
+import "./app.css";
 
 
 
@@ -14,7 +15,7 @@ function App() {
         //coordonnées GPS MADININA
         longitude: -61.024174,
         latitude: 14.641528,
-        zoom: 9
+        zoom: 10
       }}
       
       style={{width: 800, height: 800}}
@@ -31,6 +32,7 @@ function App() {
      />
     </Marker>
     <Popup
+      className='popup'
       longitude={-61.05113}
       latitude={14.55041}
       closeButton={true}
@@ -41,15 +43,15 @@ function App() {
       <div className="card">
       <label>Lieu :</label>
       <h4 className="place">Ti kay Dous</h4>
-      <label>Résumé :</label>
-      <p>Notre appartement en location</p>
+      <label >Résumé :</label>
+      <p className="description">Notre appartement en location</p>
       <label>Note :</label>
       <div className="stars">
-        <Star />
-        <Star />
-        <Star />
-        <Star />
-        <Star />
+        <Star className="star" />
+        <Star className="star" />
+        <Star className="star" />
+        <Star className="star" />
+        <Star className="star" />   
       </div>
       <label>informations :</label>
       <span className="username">Crée par <b>JeeDo</b></span>
